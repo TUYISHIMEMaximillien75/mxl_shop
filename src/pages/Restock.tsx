@@ -353,45 +353,56 @@ export function Restock() {
           )}
 
           {items.length > 0 && (() => {
-            const afterBuy = cashBalance != null ? cashBalance + extra - allTotal : null;
+            const afterBuy   = cashBalance != null ? cashBalance + extra - allTotal : null;
+            const hasShortfall = cashBalance != null && allTotal > cashBalance + extra;
+            const isOk         = cashBalance != null && allTotal <= cashBalance + extra;
             return (
               <>
-                {/* Shortfall banner in plan mode */}
-                {cashBalance != null && allTotal > cashBalance + extra && (
-                  <div className="mt-3 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 space-y-3">
-                    <div className="flex items-start gap-3">
-                      <span className="text-lg">⚠️</span>
-                      <div className="flex-1">
-                        <p className="text-sm font-semibold text-amber-900">
-                          {t('restock.shortfall')}: <span className="font-extrabold">{formatRWF(allTotal - cashBalance - extra)}</span>
+                {/* ── Cash planning card – always shown when list has items ── */}
+                {cashBalance != null && (
+                  <div className={`mt-3 rounded-2xl border px-5 py-4 space-y-3 ${
+                    hasShortfall ? 'border-amber-200 bg-amber-50' : 'border-emerald-200 bg-emerald-50'
+                  }`}>
+                    {/* Status badge */}
+                    {hasShortfall && (
+                      <div className="flex items-start gap-3">
+                        <span className="text-lg">⚠️</span>
+                        <div className="flex-1">
+                          <p className="text-sm font-semibold text-amber-900">
+                            {t('restock.shortfall')}: <span className="font-extrabold">{formatRWF(allTotal - cashBalance - extra)}</span>
+                          </p>
+                          <p className="text-xs text-amber-700 mt-0.5">{t('restock.shortfallHint')}</p>
+                        </div>
+                      </div>
+                    )}
+                    {isOk && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-base">✅</span>
+                        <p className="text-sm font-semibold text-emerald-800">
+                          {t('restock.balanceOk')} — {t('restock.newBalance')}: <span className="font-extrabold">{formatRWF(afterBuy!)}</span>
                         </p>
-                        <p className="text-xs text-amber-700 mt-0.5">{t('restock.shortfallHint')}</p>
+                      </div>
+                    )}
+
+                    {/* Extra cash input – always visible, never hides */}
+                    <div>
+                      <label className="label text-xs" htmlFor="plan-extra-cash">
+                        {t('restock.extraCash')}
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <input
+                          id="plan-extra-cash"
+                          type="number"
+                          inputMode="decimal"
+                          className="input flex-1"
+                          value={extraCash}
+                          onChange={(e) => setExtraCash(e.target.value)}
+                          placeholder="0"
+                        />
+                        <span className="text-sm text-slate-500 shrink-0">RWF</span>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <input
-                        id="plan-extra-cash"
-                        type="number" inputMode="decimal"
-                        className="input flex-1"
-                        value={extraCash}
-                        onChange={(e) => setExtraCash(e.target.value)}
-                        placeholder="0"
-                      />
-                      <span className="text-sm text-slate-500 shrink-0">RWF</span>
-                    </div>
-                    {extra > 0 && afterBuy != null && (
-                      <p className="text-xs text-slate-600">
-                        {t('restock.newBalance')}: <span className={`font-bold ${afterBuy >= 0 ? 'text-emerald-700' : 'text-red-600'}`}>{formatRWF(afterBuy)}</span>
-                      </p>
-                    )}
                   </div>
-                )}
-
-                {/* Extra cash field even when balance is enough — seller can add more */}
-                {cashBalance != null && allTotal <= cashBalance + extra && extra === 0 && (
-                  <p className="mt-2 text-xs text-emerald-700 font-medium">
-                    ✅ {t('restock.balanceOk')}: {formatRWF(cashBalance - allTotal)} {t('restock.leftAfter')}
-                  </p>
                 )}
 
                 <button id="restock-go-market"
