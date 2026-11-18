@@ -13,6 +13,8 @@ export const en = {
   'nav.inventory': 'Inventory',
   'nav.add': 'Add Product',
   'nav.sales': 'Sales',
+  'nav.restock': 'Kurangura',
+  'nav.calc': 'Calculations',
   'nav.settings': 'Settings',
 
   // Common
@@ -215,6 +217,132 @@ export const en = {
   'sales.addToCart': 'Confirm',
   'sales.items': '{count} item(s)',
   'toast.saleRecorded': 'Sale of {total} recorded successfully!',
+
+  // Calculations
+  'calc.title': 'Calculations',
+  'calc.subtitle': 'Full financial picture of your shop.',
+  'calc.refresh': 'Refresh',
+  'calc.noSales': 'No sales recorded yet.',
+  'calc.noSalesHint': 'Record your first sale to see profit and revenue data here.',
+
+  // Balance cards
+  'calc.balanceTitle': 'Shop Balance',
+  'calc.balanceSubtitle': 'What is in your shop right now.',
+  'calc.stockCost': 'Stock value (at cost)',
+  'calc.stockCostHint': 'Money tied up in current inventory (buying price × qty)',
+  'calc.stockSell': 'Stock value (at selling price)',
+  'calc.stockSellHint': 'Revenue if you sell everything remaining',
+  'calc.stockItems': 'Items in stock',
+  'calc.stockItemsHint': 'Total units across all products',
+  'calc.stockProducts': 'Products',
+  'calc.stockProductsHint': 'Different product types registered',
+  'calc.viewInventory': 'View inventory',
+  'calc.viewInventoryHint': 'See all products and quantities',
+  'calc.cashTitle': 'Real money balance (cash)',
+  'calc.cashHint': 'Opening + sales − purchases · tap to see sales',
+  'calc.openingCashLabel': 'Opening',
+  'calc.purchasesLabel': 'Purchases',
+  'calc.salesCountLinkHint': 'Tap to view the list of sales',
+  'history.title': 'Sales list',
+  'history.subtitle': 'All recorded sales, newest first.',
+  'history.link': 'Sales list',
+  'history.newSale': 'New sale',
+  'history.search': 'Search by product...',
+  'history.empty': 'No sales found.',
+  'history.units': 'units',
+  'calc.potentialProfit': 'Potential profit (remaining stock)',
+  'calc.potentialProfitHint': 'If all remaining stock is sold',
+
+  // Sales cards
+  'calc.salesTitle': 'Sales Performance',
+  'calc.salesSubtitle': 'Revenue and profit from all recorded sales.',
+  'calc.totalRevenue': 'Total revenue',
+  'calc.totalRevenueHint': 'Cash collected from all sales',
+  'calc.grossProfit': 'Gross profit',
+  'calc.grossProfitHint': 'Revenue minus cost of goods sold',
+  'calc.itemsSold': 'Items sold',
+  'calc.itemsSoldHint': 'Total units sold across all sales',
+  'calc.salesCount': 'Sales recorded',
+  'calc.salesCountHint': 'Number of sale transactions',
+  'calc.avgSale': 'Avg. sale value',
+  'calc.avgSaleHint': 'Average amount per transaction',
+
+  // Investment
+  'calc.investTitle': 'Investment Overview',
+  'calc.investSubtitle': 'How your money is performing.',
+  'calc.originalInvest': 'Original investment',
+  'calc.recovered': 'Recovered (revenue)',
+  'calc.remaining': 'Tied in stock (cost)',
+  'calc.netPosition': 'Net position',
+  'calc.netPositionHint': 'Revenue + stock cost value − original investment',
+  'calc.profitMargin': 'Profit margin',
+  'calc.profitMarginHint': 'Gross profit ÷ total revenue',
+
+  // Top products
+  'calc.topTitle': 'Top Products by Revenue',
+  'calc.topSubtitle': 'Your best-selling items.',
+  'calc.colProduct': 'Product',
+  'calc.colQtySold': 'Sold',
+  'calc.colRevenue': 'Revenue',
+  'calc.colProfit': 'Profit',
+
+  // Category
+  'calc.catTitle': 'Revenue by Category',
+  'calc.catSubtitle': 'Which categories earn the most.',
+
+  // Daily
+  'calc.dailyTitle': 'Last 14 Days',
+  'calc.dailySubtitle': 'Daily revenue trend.',
+  'calc.noDaily': 'No sales in the last 14 days.',
+
+  // Restock / Kurangura
+  'restock.title': 'Kurangura',
+  'restock.subtitle': 'Plan your restock, then mark what you bought.',
+  'restock.planMode': 'Plan',
+  'restock.marketMode': 'At market',
+  'restock.addItem': 'Add item to list',
+  'restock.addItemHint': 'Pick an existing product or add a new one',
+  'restock.pickExisting': 'Pick existing product',
+  'restock.searchProduct': 'Search product...',
+  'restock.productName': 'Product name',
+  'restock.category': 'Category',
+  'restock.sellingPrice': 'Selling price (RWF)',
+  'restock.spHint': 'Required for new products so they can be sold',
+  'restock.qty': 'Qty',
+  'restock.buyPrice': 'Buy price (RWF)',
+  'restock.total': 'Total',
+  'restock.saveItem': 'Add to list',
+  'restock.empty': 'List is empty',
+  'restock.emptyHint': 'Add products you want to buy',
+  'restock.planTotal': 'Estimated total',
+  'restock.products': 'products',
+  'restock.each': 'each',
+  'restock.goMarket': 'I am going to market',
+  'restock.tickedTotal': 'Ticked total',
+  'restock.addInventory': 'Add to inventory',
+  'restock.confirmTitle': 'Confirm purchase',
+  'restock.buying': 'Spending',
+  'restock.cashBalance': 'Cash balance',
+  'restock.shortfall': 'Shortfall',
+  'restock.shortfallHint': 'Enter extra cash you have to cover it.',
+  'restock.extraCash': 'Extra cash added (RWF)',
+  'restock.newBalance': 'Balance after',
+  'restock.confirm': 'Confirm & add to inventory',
+  'restock.noTicked': 'Tick at least one item first.',
+  'restock.done': 'Stock updated and purchase recorded!',
+
+  // Settings - opening cash
+  'settings.openingCash': 'Opening cash',
+  'settings.openingCashHint': 'Money you started with before any sales.',
+  'settings.saveCash': 'Save',
+  'settings.cashSaved': 'Opening cash saved.',
+
+  // Calculations - purchases
+  'calc.purchases': 'Total purchases',
+  'calc.purchasesHint': 'Money spent buying stock',
+  'calc.purchaseCount': 'Purchase trips',
+  'calc.purchaseCountHint': 'Number of times you restocked',
+
 } as const;
 
 export type TranslationKey = keyof typeof en;

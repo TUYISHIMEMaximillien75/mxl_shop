@@ -9,7 +9,9 @@ import {
   ShoppingCart,
   Trash2,
   X,
+  History,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import type { CartItem, Product } from '../types';
 import { useProducts } from '../context/ProductsContext';
 import { useToast } from '../context/ToastContext';
@@ -333,7 +335,15 @@ export function Sales() {
 
   return (
     <>
-      <PageHeader title={t('sales.title')} description={t('sales.subtitle')} />
+      <PageHeader
+        title={t('sales.title')}
+        description={t('sales.subtitle')}
+        actions={
+          <Link to="/sales/history" id="sales-history-link" className="btn-secondary gap-1.5">
+            <History className="h-4 w-4" /> {t('history.link')}
+          </Link>
+        }
+      />
 
       {/* Modal — only opened when isMobile */}
       {modalProduct && isMobile && (

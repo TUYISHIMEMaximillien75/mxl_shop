@@ -63,6 +63,45 @@ async function setup() {
     )
   `;
 
+  // Kurangura: shopping-list table
+  await sql`
+    CREATE TABLE IF NOT EXISTS restock_list (
+      id            SERIAL PRIMARY KEY,
+      product_id    INTEGER REFERENCES products(id) ON DELETE SET NULL,
+      name          TEXT NOT NULL,
+      category      TEXT NOT NULL DEFAULT '',
+      selling_price NUMERIC(12,2),
+      qty           INTEGER NOT NULL CHECK (qty > 0),
+      buy_price     NUMERIC(12,2) NOT NULL CHECK (buy_price > 0),
+      checked       BOOLEAN NOT NULL DEFAULT FALSE,
+      created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+    )
+  `;
+
+  // Purchase history header
+  await sql`
+    CREATE TABLE IF NOT EXISTS purchases (
+      id           SERIAL PRIMARY KEY,
+      bought_at    TIMESTAMPTZ NOT NULL DEFAULT now(),
+      total_rwf    NUMERIC(12,2) NOT NULL,
+      note         TEXT,
+      extra_cash   NUMERIC(12,2) NOT NULL DEFAULT 0
+    )
+  `;
+
+  // Purchase history lines
+  await sql`
+    CREATE TABLE IF NOT EXISTS purchase_items (
+      id          SERIAL PRIMARY KEY,
+      purchase_id INTEGER NOT NULL REFERENCES purchases(id) ON DELETE CASCADE,
+      product_id  INTEGER REFERENCES products(id) ON DELETE SET NULL,
+      name        TEXT NOT NULL,
+      qty         INTEGER NOT NULL CHECK (qty > 0),
+      buy_price   NUMERIC(12,2) NOT NULL,
+      subtotal    NUMERIC(12,2) NOT NULL
+    )
+  `;
+
   // Seed sample products only the very first time the app runs.
   const claimed = await sql`
     INSERT INTO app_meta (key, value) VALUES ('sample_seeded', 'true')

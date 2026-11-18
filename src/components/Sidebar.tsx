@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Package, PlusCircle, Settings, ShoppingCart, Store, X } from 'lucide-react';
+import { Calculator, LayoutDashboard, Package, PlusCircle, Settings, ShoppingBag, ShoppingCart, Store, X } from 'lucide-react';
 import { useI18n } from '../i18n';
 
 interface SidebarProps {
@@ -12,9 +12,11 @@ export function Sidebar({ open, onClose }: SidebarProps) {
 
   const NAV = [
     { to: '/', label: t('nav.sales'), icon: ShoppingCart, end: true },
+    { to: '/restock', label: t('nav.restock'), icon: ShoppingBag, end: false },
     { to: '/dashboard', label: t('nav.dashboard'), icon: LayoutDashboard, end: false },
     { to: '/inventory', label: t('nav.inventory'), icon: Package, end: false },
     { to: '/add', label: t('nav.add'), icon: PlusCircle, end: false },
+    { to: '/calculations', label: t('nav.calc'), icon: Calculator, end: false },
     { to: '/settings', label: t('nav.settings'), icon: Settings, end: false },
   ];
 

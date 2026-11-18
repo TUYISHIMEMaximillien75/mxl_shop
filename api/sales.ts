@@ -77,15 +77,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       SELECT s.id, s.sold_at, s.total_rwf, s.note,
              json_agg(json_build_object(
                'productId', si.product_id,
+               'name',      COALESCE(p.name, '—'),
                'qty',       si.qty,
                'unitPrice', si.unit_price,
                'subtotal',  si.subtotal
              ) ORDER BY si.id) AS items
       FROM sales s
       JOIN sale_items si ON si.sale_id = s.id
+      LEFT JOIN products p ON p.id = si.product_id
       GROUP BY s.id
       ORDER BY s.sold_at DESC
-      LIMIT 50
+      LIMIT 200
     `;
     return res.status(200).json(
       sales.map((s) => ({

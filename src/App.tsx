@@ -8,6 +8,9 @@ import { Inventory } from './pages/Inventory';
 import { AddProduct } from './pages/AddProduct';
 import { Sales } from './pages/Sales';
 import { Settings } from './pages/Settings';
+import { Calculations } from './pages/Calculations';
+import { Restock } from './pages/Restock';
+import { SalesHistory } from './pages/SalesHistory';
 
 export default function App() {
   return (
@@ -22,7 +25,10 @@ export default function App() {
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="inventory" element={<Inventory />} />
                 <Route path="add" element={<AddProduct />} />
+                <Route path="restock" element={<Restock />} />
+                <Route path="sales/history" element={<SalesHistory />} />
                 <Route path="sales" element={<Navigate to="/" replace />} />
+                <Route path="calculations" element={<Calculations />} />
                 <Route path="settings" element={<Settings />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Route>

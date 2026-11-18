@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Database, Globe, Info, PackagePlus, Trash2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Coins, Database, Globe, Info, PackagePlus, Trash2 } from 'lucide-react';
 import { useProducts } from '../context/ProductsContext';
 import { useToast } from '../context/ToastContext';
 import { PageHeader } from '../components/PageHeader';
@@ -18,6 +18,24 @@ export function Settings() {
   const { t, th, locale, setLocale } = useI18n();
   const [confirmClear, setConfirmClear] = useState(false);
   const [loadingSamples, setLoadingSamples] = useState(false);
+  const [openingCash, setOpeningCash] = useState('');
+  const [cashSaving, setCashSaving] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/opening-cash').then(r => r.json()).then(d => setOpeningCash(String(d.openingCash || '')));
+  }, []);
+
+  const saveOpeningCash = async () => {
+    setCashSaving(true);
+    try {
+      await fetch('/api/opening-cash', {
+        method: 'PUT', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ openingCash: Number(openingCash) }),
+      });
+      toast(t('settings.cashSaved'));
+    } catch (e) { toast((e as Error).message, 'error'); }
+    finally { setCashSaving(false); }
+  };
 
   const sampleCount = products.filter((p) => p.isSample).length;
   const ownCount = products.length - sampleCount;
@@ -75,6 +93,27 @@ export function Settings() {
                 {LOCALE_LABELS[l]}
               </button>
             ))}
+          </div>
+        </section>
+
+        {/* Opening cash */}
+        <section className="card p-5 sm:p-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+              <Coins className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="font-semibold text-slate-900">{t('settings.openingCash')}</h2>
+              <p className="text-sm text-slate-500">{t('settings.openingCashHint')}</p>
+            </div>
+          </div>
+          <div className="mt-5 flex gap-2">
+            <input id="opening-cash-input" type="number" className="input flex-1"
+              value={openingCash} onChange={(e) => setOpeningCash(e.target.value)}
+              placeholder="0" />
+            <button id="opening-cash-save" className="btn-primary" onClick={saveOpeningCash} disabled={cashSaving}>
+              {cashSaving ? '...' : t('settings.saveCash')}
+            </button>
           </div>
         </section>
 
