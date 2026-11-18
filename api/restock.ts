@@ -36,7 +36,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const ticked = await sql`SELECT * FROM restock_list WHERE checked = TRUE`;
       if (ticked.length === 0) return res.status(400).json({ error: 'No items are ticked.' });
 
-      const totalRwf = ticked.reduce((s, r) => s + Number(r.buy_price) * Number(r.qty), 0) - Number(extraCash);
+      // goods cost = what was actually paid for the stock items
+      const purchaseCost = ticked.reduce((s, r) => s + Number(r.buy_price) * Number(r.qty), 0);
+      // totalRwf stored in DB = actual goods cost (extra_cash is tracked separately in its own column)
+      const totalRwf = purchaseCost;
 
       // Upsert each ticked product, record history, remove ticked rows — in one transaction
       const ops = [];
@@ -94,15 +97,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         await sql`
           INSERT INTO purchase_items (purchase_id, product_id, name, qty, buy_price, subtotal)
           VALUES (${purchaseId}, ${resolvedPid}, ${name}, ${qty}, ${price}, ${subtotal})
-        `;
-      }
-
-      // Record extra cash added to balance
-      if (Number(extraCash) > 0) {
-        await sql`
-          INSERT INTO app_meta (key, value)
-          VALUES ('extra_cash_total', ${String(Number(extraCash))})
-          ON CONFLICT (key) DO UPDATE SET value = (CAST(app_meta.value AS NUMERIC) + ${Number(extraCash)})::TEXT
         `;
       }
 
