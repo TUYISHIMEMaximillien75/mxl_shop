@@ -332,6 +332,9 @@ export const rw: Record<TranslationKey, string> = {
   'restock.confirm': 'Emeza wongeremo mu bubiko',
   'restock.noTicked': 'Suzuma byibura ikintu kimwe mbere.',
   'restock.done': 'Ububiko bwongeweho kandi igura ryanditswe!',
+  'restock.balanceOk': 'Ufite amafaranga ahagije. Usigaye ufite',
+  'restock.leftAfter': '',
+  'restock.stillShort': 'Ukibura ku isoko',
 
   // Settings - opening cash
   'settings.openingCash': "Amafaranga y'ibanze",

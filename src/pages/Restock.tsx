@@ -170,7 +170,7 @@ export function Restock() {
   const allTotal     = items.reduce((s, i) => s + i.qty * i.buyPrice, 0);
   // shortfall computed inline in JSX
   const extra        = Number(extraCash) || 0;
-  const willBalance  = cashBalance != null ? cashBalance + extra - tickedTotal : null;
+
 
   const completePurchase = async () => {
     if (tickedItems.length === 0) { toast(t('restock.noTicked'), 'error'); return; }
@@ -352,13 +352,56 @@ export function Restock() {
             </div>
           )}
 
-          {items.length > 0 && (
-            <button id="restock-go-market"
-              className="mt-4 w-full rounded-2xl bg-amber-500 py-4 text-base font-bold text-white shadow-lg shadow-amber-500/30 transition hover:-translate-y-0.5 hover:bg-amber-600 active:translate-y-0"
-              onClick={() => setMode('market')}>
-              {t('restock.goMarket')} →
-            </button>
-          )}
+          {items.length > 0 && (() => {
+            const afterBuy = cashBalance != null ? cashBalance + extra - allTotal : null;
+            return (
+              <>
+                {/* Shortfall banner in plan mode */}
+                {cashBalance != null && allTotal > cashBalance + extra && (
+                  <div className="mt-3 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 space-y-3">
+                    <div className="flex items-start gap-3">
+                      <span className="text-lg">⚠️</span>
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-amber-900">
+                          {t('restock.shortfall')}: <span className="font-extrabold">{formatRWF(allTotal - cashBalance - extra)}</span>
+                        </p>
+                        <p className="text-xs text-amber-700 mt-0.5">{t('restock.shortfallHint')}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        id="plan-extra-cash"
+                        type="number" inputMode="decimal"
+                        className="input flex-1"
+                        value={extraCash}
+                        onChange={(e) => setExtraCash(e.target.value)}
+                        placeholder="0"
+                      />
+                      <span className="text-sm text-slate-500 shrink-0">RWF</span>
+                    </div>
+                    {extra > 0 && afterBuy != null && (
+                      <p className="text-xs text-slate-600">
+                        {t('restock.newBalance')}: <span className={`font-bold ${afterBuy >= 0 ? 'text-emerald-700' : 'text-red-600'}`}>{formatRWF(afterBuy)}</span>
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {/* Extra cash field even when balance is enough — seller can add more */}
+                {cashBalance != null && allTotal <= cashBalance + extra && extra === 0 && (
+                  <p className="mt-2 text-xs text-emerald-700 font-medium">
+                    ✅ {t('restock.balanceOk')}: {formatRWF(cashBalance - allTotal)} {t('restock.leftAfter')}
+                  </p>
+                )}
+
+                <button id="restock-go-market"
+                  className="mt-4 w-full rounded-2xl bg-amber-500 py-4 text-base font-bold text-white shadow-lg shadow-amber-500/30 transition hover:-translate-y-0.5 hover:bg-amber-600 active:translate-y-0"
+                  onClick={() => setMode('market')}>
+                  {t('restock.goMarket')} →
+                </button>
+              </>
+            );
+          })()}
         </>
       )}
 
@@ -469,30 +512,17 @@ export function Restock() {
                   {cashBalance != null && (
                     <div className="flex justify-between">
                       <span className="text-slate-600">{t('restock.cashBalance')}</span>
-                      <span className={`font-bold ${cashBalance >= tickedTotal ? 'text-emerald-700' : 'text-red-600'}`}>{formatRWF(cashBalance)}</span>
+                      <span className={`font-bold ${cashBalance + extra >= tickedTotal ? 'text-emerald-700' : 'text-red-600'}`}>
+                        {formatRWF(cashBalance + extra)}
+                      </span>
                     </div>
                   )}
-                  {cashBalance != null && cashBalance < tickedTotal && (
-                    <p className="mt-1 rounded-lg bg-amber-50 px-3 py-2 text-xs text-amber-800">
-                      ⚠️ {t('restock.shortfall')}: {formatRWF(tickedTotal - cashBalance)}. {t('restock.shortfallHint')}
+                  {cashBalance != null && cashBalance + extra < tickedTotal && (
+                    <p className="mt-1 rounded-lg bg-red-50 px-3 py-2 text-xs text-red-700 font-medium">
+                      ⚠️ {t('restock.stillShort')}: {formatRWF(tickedTotal - cashBalance - extra)}
                     </p>
                   )}
                 </div>
-
-                {/* Extra cash input */}
-                {cashBalance != null && cashBalance < tickedTotal && (
-                  <div>
-                    <label className="label">{t('restock.extraCash')}</label>
-                    <input className="input" type="number" value={extraCash}
-                      onChange={(e) => setExtraCash(e.target.value)}
-                      placeholder="0" />
-                    {extra > 0 && (
-                      <p className="mt-1 text-xs text-slate-500">
-                        {t('restock.newBalance')}: <span className={`font-bold ${willBalance! >= 0 ? 'text-emerald-700' : 'text-red-600'}`}>{formatRWF(willBalance!)}</span>
-                      </p>
-                    )}
-                  </div>
-                )}
 
                 <div className="flex gap-2">
                   <button className="btn-secondary flex-1" onClick={() => setShowComplete(false)}>{t('common.cancel')}</button>

@@ -330,6 +330,9 @@ export const en = {
   'restock.confirm': 'Confirm & add to inventory',
   'restock.noTicked': 'Tick at least one item first.',
   'restock.done': 'Stock updated and purchase recorded!',
+  'restock.balanceOk': 'You have enough cash. Left after buying',
+  'restock.leftAfter': '',
+  'restock.stillShort': 'Still short at market',
 
   // Settings - opening cash
   'settings.openingCash': 'Opening cash',
